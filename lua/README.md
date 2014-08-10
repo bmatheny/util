@@ -6,7 +6,7 @@
 
 Then put the following in your zsh configs
 
-<code><pre>
+<pre><code>
 export LUA_USER=/path/to/util/lua
 local lua_cache=$HOME/.lua.zsh
 
@@ -25,7 +25,7 @@ if [ ! -f $lua_cache ]; then
 fi
 
 source $lua_cache
-</pre></code>
+</code></pre>
 
 This will also take over management of your `LUA_PATH` but I can't figure
 out a better way to accomplish this. Once you have done that you can simply
