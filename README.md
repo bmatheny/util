@@ -1,4 +1,3 @@
-bmatheny/util
-====
+# bmatheny/util
 
-Random code. Probably don't use this.
+Random code. Probably don't use this. For serious.
