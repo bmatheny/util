@@ -2,6 +2,8 @@
 
     brew install luarocks
     luarocks install penlight
+    luarocks install argparse
+    luarocks install 30log
     luarocks install busted
 
 Then put the following in your zsh configs
