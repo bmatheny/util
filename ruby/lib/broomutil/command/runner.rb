@@ -1,3 +1,4 @@
+require 'broomutil/logger'
 require 'broomutil/mixins'
 require 'broomutil/command/result'
 
@@ -13,7 +14,7 @@ module BroomUtil
 
       def initialize config = {}
         @opts = create_config_hash config, downcase: true
-        @logger = @opts.fetch(:logger, Logger.new(STDOUT))
+        @logger = @opts.fetch(:logger, BroomUtil::Logger.get)
         @test_results = @opts[:test_results]
         @logger.debug "BroomUtil::Command::Runner opts => #{@opts}"
       end

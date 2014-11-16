@@ -5,47 +5,35 @@ module BroomUtil; module Concurrent
   class GoodTime
     def initialize time, unit
       @time = time
-      @unit = TimeUnit.new unit
+      unless unit.is_a?(TimeUnit) then
+        raise ExpectationFailedError.new("expected TimeUnit, got #{unit.class}")
+      end
+      @unit = unit
     end
 
     def millisecond
-      case
-      when @unit.milliseconds?
-        @time
-      when @unit.seconds?
-        @time * 1000
-      when @unit.minutes?
-        @time * 1000 * 60
-      when @unit.hours?
-        @time * 1000 * 60 * 60
-      when @unit.days?
-        @time * 1000 * 60 * 60 * 24
-      end
+      @unit.millis(@time)
     end
-
-    def milliseconds
-      millisecond
-    end
+    alias_method :milliseconds, :millisecond
 
     def second
-      milliseconds / 1000
+      @unit.to_seconds(@time)
     end
+    alias_method :seconds, :second
 
-    def seconds
-      second
+    def minute
+      @unit.to_minutes(@time)
     end
-
-    def minutes
-      seconds / 60
-    end
+    alias_method :minutes, :minute
 
     def hour
-      minutes / 60
+      @unit.to_hours(@time)
     end
+    alias_method :hours, :hour
 
-    def hours
-      minutes / 60
+    def day
     end
+    alias_method :days, :day
 
     def to_i
       seconds

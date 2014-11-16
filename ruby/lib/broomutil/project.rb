@@ -36,8 +36,7 @@ module BroomUtil
       end
 
       if logger.nil? then
-        @logger = Logger.new(STDERR)
-        @logger.level = Logger::WARN
+        @logger = BroomUtil::Logger.get
       else
         @logger = logger
       end
