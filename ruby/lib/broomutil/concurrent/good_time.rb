@@ -11,8 +11,18 @@ module BroomUtil; module Concurrent
       @unit = unit
     end
 
+    def nanosecond
+      @unit.to_nanos(@time)
+    end
+    alias_method :nanoseconds, :nanosecond
+
+    def microsecond
+      @unit.to_micros(@time)
+    end
+    alias_method :microseconds, :microsecond
+
     def millisecond
-      @unit.millis(@time)
+      @unit.to_millis(@time)
     end
     alias_method :milliseconds, :millisecond
 
@@ -32,6 +42,7 @@ module BroomUtil; module Concurrent
     alias_method :hours, :hour
 
     def day
+      @unit.to_days(@time)
     end
     alias_method :days, :day
 

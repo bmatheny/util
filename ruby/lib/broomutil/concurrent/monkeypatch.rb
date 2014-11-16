@@ -1,27 +1,43 @@
 # Convert fixnum to GoodTime unit
 class Fixnum
+  def nanosecond
+    make_good_time self, :NANOSECONDS
+  end
+  alias_method :nanoseconds, :nanosecond
+
+  def microsecond
+    make_good_time self, :MICROSECONDS
+  end
+  alias_method :microseconds, :microsecond
+
   def millisecond
-    BroomUtil::Concurrent::GoodTime.new(self, BroomUtil::Concurrent::TimeUnit::MILLISECONDS)
+    make_good_time self, :MILLISECONDS
   end
   alias_method :milliseconds, :millisecond
 
   def second
-    BroomUtil::Concurrent::GoodTime.new(self, BroomUtil::Concurrent::TimeUnit::SECONDS)
+    make_good_time self, :SECONDS
   end
   alias_method :seconds, :second
 
   def minute
-    BroomUtil::Concurrent::GoodTime.new(self, BroomUtil::Concurrent::TimeUnit::MINUTES)
+    make_good_time self, :MINUTES
   end
   alias_method :minutes, :minute
 
   def hour
-    BroomUtil::Concurrent::GoodTime.new(self, BroomUtil::Concurrent::TimeUnit::HOURS)
+    make_good_time self, :HOURS
   end
   alias_method :hours, :hour
 
   def day
-    BroomUtil::Concurrent::GoodTime.new(self, BroomUtil::Concurrent::TimeUnit::DAYS)
+    make_good_time self, :DAYS
   end
   alias_method :days, :day
+
+  private
+  def make_good_time i, u
+    unit = BroomUtil::Concurrent::TimeUnit.const_get u
+    BroomUtil::Concurrent::GoodTime.new(i, unit)
+  end
 end
