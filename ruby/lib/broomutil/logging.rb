@@ -68,6 +68,9 @@ module BroomUtil; module Logging
       @logger.level = l
       self
     end
+    def logger
+      @logger
+    end
     def trace t
       @logger.trace = t
       self
