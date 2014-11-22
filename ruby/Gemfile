@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 Encoding.default_external = Encoding::UTF_8
 
 gem 'chronic'
+gem 'logging'
 
 group :test do
   gem 'rspec'

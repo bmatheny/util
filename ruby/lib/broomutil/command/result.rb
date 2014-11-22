@@ -7,10 +7,6 @@ module BroomUtil
 
       attr_accessor :exit_code, :command, :details, :stdout, :stderr, :success
 
-      def self.error details = {}
-        Result.new :exit_code => -1, :details => details
-      end
-
       def initialize options = {}
         hash = symbolize_hash options, :downcase => true
         if hash.key?(:exit_code) then

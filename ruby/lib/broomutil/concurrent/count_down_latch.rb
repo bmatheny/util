@@ -13,7 +13,7 @@ module BroomUtil; module Concurrent
       @mutex = Mutex.new
       @name = name || "default"
       @conditional = ConditionVariable.new
-      @logger = logger || BroomUtil::Logger.get
+      @logger = BroomUtil::Logging.get_logger self.class
       log "Initializing with count #{count}"
     end
 

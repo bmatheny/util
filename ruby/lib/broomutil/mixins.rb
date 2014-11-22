@@ -30,6 +30,14 @@ module BroomUtil
       Marshal.load Marshal.dump(hash)
     end
 
+    # Raise a NotImplementedError
+    #
+    # @param [String|Symbol] name the name of the method not implemented
+    # @raise [NotImplementedError] always raises
+    def raise_not_implemented name
+      raise NotImplementedError.new("#{name.to_s} not implemented")
+    end
+
     # Require that a guard condition passes
     #
     # Simply checks that the guard is truthy, and throws an error otherwise

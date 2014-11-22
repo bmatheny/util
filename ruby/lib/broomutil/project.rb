@@ -21,7 +21,7 @@ module BroomUtil
     attr_accessor :logger
     attr_reader :project, :project_base, :util_base
 
-    def initialize project_name, project_base, logger = nil
+    def initialize project_name, project_base
       this_dir = File.dirname(__FILE__)
       @project = project_name
       @project_base = File.join(project_base, 'lib')
@@ -35,11 +35,7 @@ module BroomUtil
         $:.unshift @project_base
       end
 
-      if logger.nil? then
-        @logger = BroomUtil::Logger.get
-      else
-        @logger = logger
-      end
+      @logger = BroomUtil::Logging.get_logger self.class
 
       # Require UTIL_BASE/project*
       require_module @util_base, project_name, false

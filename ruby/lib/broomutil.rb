@@ -12,6 +12,6 @@ module BroomUtil
 end
 
 require 'broomutil/errors'
-require 'broomutil/logger'
+require 'broomutil/logging'
 require 'broomutil/mixins'
 require 'broomutil/project'
