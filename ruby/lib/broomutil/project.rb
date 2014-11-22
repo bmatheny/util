@@ -41,7 +41,6 @@ module BroomUtil
       require_module @util_base, project_name, false
     end # def init
 
-
     def self.init_project project_name, project_base, logger = nil
       BroomUtil.new(project_name, project_base, logger)
     end
