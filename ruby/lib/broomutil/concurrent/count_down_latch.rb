@@ -21,8 +21,8 @@ module BroomUtil; module Concurrent
     end
 
     def countdown!
-      @logger.debug mk_log("countdown!")
       @mutex.synchronize do
+        @logger.trace mk_log("countdown!")
         @count -= 1 if @count > 0
         @conditional.broadcast if @count == 0
       end
