@@ -2,12 +2,15 @@ require 'logging'
 require 'singleton'
 
 # Usage:
-# logger = BroomUtil::Logging.get_logger self.class
-# BroomUtil::Logging.configure(self.class)
+# logger = BroomUtil::Logging.configure(self.class)
 #   .level(:trace)
 #   .trace(true)
 #   .additive(false)
 #   .appenders('broom.stdout.trace.on')
+#   .logger()
+# OR
+# logger = BroomUtil::Logging.get_logger self.class
+# Note that the above will inherit the root loggers configuration
 module BroomUtil; module Logging
 
   COLOR_SCHEMES = {
@@ -39,6 +42,24 @@ module BroomUtil; module Logging
       ::Logging.logger[name]
     end
 
+    def get_verbose increase, log_level
+      sev = log_level
+      if increase then
+        if sev > ::Logging::LEVELS.values.min then
+          sev -= 1
+        end
+      else
+        if sev < ::Logging::LEVELS.values.max
+          sev += 1
+        end
+      end
+      sev
+    end
+
+    def level_name num
+      ::Logging.levelify(::Logging::LNAMES[num])
+    end
+
     def load_yaml file
       unless File.exists?(file) then
         raise BroomUtil::ExpectationFailedError.new("file #{file} does not exist")
@@ -64,6 +85,27 @@ module BroomUtil; module Logging
     def initialize name
       @logger = ::BroomUtil::Logging.get_logger(name)
     end
+    def from_config level, outfile
+      lvl = BroomUtil::Logging.level_name(level)
+      level(lvl)
+      if outfile.is_a?(String) then
+        if @logger.trace? then
+          pattern = PATTERNS['broom.stdout.trace.on']
+        else
+          pattern = PATTERNS['broom.stdout.trace.off']
+        end
+        ::Logging.appenders.file(
+          outfile,
+          :level => lvl,
+          :layout => ::Logging.layouts.pattern(
+            :pattern        => pattern,
+            :date_pattern => PATTERNS['broom.date'],
+          )
+        )
+        @logger.add_appenders(outfile)
+      end
+      self
+    end
     def level l
       @logger.level = l
       self
@@ -76,7 +118,9 @@ module BroomUtil; module Logging
       self
     end
     def additive a
-      @logger.additive = a
+      if @logger.respond_to?('additive') then
+        @logger.additive = a
+      end
       self
     end
     def appenders args
