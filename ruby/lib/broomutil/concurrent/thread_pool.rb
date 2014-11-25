@@ -30,14 +30,19 @@ module BroomUtil
           submit { throw :exit }
         end
         if timeout then
-          begin
-            Timeout::timeout timeout.to_i do
-              pool.map(&:join)
-            end
-          rescue Timeout::Error => e
+          if timeout == :now then
             pool.each {|t| t.kill}
             result = false
-          end
+          else
+            begin
+              Timeout::timeout timeout.to_i do
+                pool.map(&:join)
+              end
+            rescue Timeout::Error => e
+              pool.each {|t| t.kill}
+              result = false
+            end
+          end # FIXME finish this
         else
           pool.map(&:join)
         end

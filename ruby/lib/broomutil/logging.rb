@@ -90,7 +90,11 @@ module BroomUtil; module Logging
       @logger = ::BroomUtil::Logging.get_logger(name)
     end
     def from_config level, outfile
-      lvl = BroomUtil::Logging.level_name(level)
+      if level.is_a?(Symbol) then
+        lvl = level
+      else
+        lvl = BroomUtil::Logging.level_name(level)
+      end
       level(lvl)
       if outfile.is_a?(String) then
         if @logger.trace? then

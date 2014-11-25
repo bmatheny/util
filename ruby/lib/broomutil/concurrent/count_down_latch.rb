@@ -46,7 +46,9 @@ module BroomUtil; module Concurrent
             @conditional.wait @mutex if @count > 0
           end
         end
+        @logger.debug mk_log("Finished waiting within timeout")
       rescue Timeout::Error => e
+        @logger.warn mk_log("Timeout waiting")
         if exception then
           raise e
         else
