@@ -62,13 +62,16 @@ module BroomUtil; module Config
       OptionParser.new(banner, width, indent) do |opts|
         @options.each do |config_key,config_value|
           opt_default = config_value.default
+          # NOTE this resets all config values to defaults which may be unexpected
+          @config[config_key] = opt_default
           opt_args = config_value.args
           opt_parser = config_value.parser
-          opts.on(*opt_args) do |a|
+          opts.on(*opt_args) do |arg_value|
             if opt_parser == :identity then
-              @config[config_key] = a
+              @config[config_key] = arg_value
             else
-              @config[config_key] = opt_parser.call(a, @config[config_key])
+              prev_value = @config[config_key]
+              @config[config_key] = opt_parser.call(arg_value, prev_value)
             end
           end
         end
