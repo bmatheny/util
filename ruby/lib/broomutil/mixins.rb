@@ -52,6 +52,17 @@ module BroomUtil
       end
     end
 
+    # Require that a value is of the specified type
+    #
+    # @param [Object] value the value to be checked
+    # @param [Class] the expected type of the value
+    # @raise [ArgumentError] if the value is not of the specified type
+    def require_type value, type
+      unless value.is_a?(type) then
+        raise ArgumentError.new("expected type #{type}, got type #{value.class}")
+      end
+    end
+
     # Given a hash, rewrite keys to symbols
     #
     # @param [Hash] hash the hash to symbolize
@@ -76,7 +87,9 @@ module BroomUtil
     end
 
     # This provides access to these methods as BroomUtil::Mixins.method_name
-    [:deep_copy_hash, :require_that, :symbolize_hash].each do |method|
+    [:create_config_hash, :deep_copy_hash, :raise_not_implemented,
+     :require_that, :require_type, :symbolize_hash
+    ].each do |method|
       module_function method
       public method # without this, module_function makes the method private
     end

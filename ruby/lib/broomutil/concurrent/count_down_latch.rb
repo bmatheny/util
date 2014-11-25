@@ -1,6 +1,7 @@
 require 'thread'
 require 'timeout'
 
+require 'broomutil/mixins'
 require 'broomutil/concurrent/good_time'
 
 # Taken from https://github.com/benlangfeld/countdownlatch/blob/master/lib/countdownlatch.rb
@@ -9,7 +10,9 @@ module BroomUtil; module Concurrent
   class CountDownLatch
 
     def initialize count, name = nil
-      @count = count
+      BroomUtil::Mixins.require_type(count, Integer)
+      BroomUtil::Mixins.require_that(count > 0, "count <= 0")
+      @count = count.to_i
       @mutex = Mutex.new
       @name = name || "default"
       @conditional = ConditionVariable.new
