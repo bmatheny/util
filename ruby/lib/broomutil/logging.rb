@@ -39,7 +39,11 @@ module BroomUtil; module Logging
 
     def get_logger name
       @_manager ||= LogManager.instance()
-      ::Logging.logger[name]
+      logger = ::Logging.logger[name]
+      if ::Logging.logger.root.trace? then
+        logger.trace = true
+      end
+      logger
     end
 
     def get_verbose increase, log_level

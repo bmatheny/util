@@ -8,18 +8,18 @@ module BroomUtil; module Concurrent
 
   class CountDownLatch
 
-    def initialize count, name = nil, logger = nil
+    def initialize count, name = nil
       @count = count
       @mutex = Mutex.new
       @name = name || "default"
       @conditional = ConditionVariable.new
       @logger = BroomUtil::Logging.get_logger self.class
-      log "Initializing with count #{count}"
+      @logger.debug mk_log("Initializing with count #{count}")
     end
 
     def countdown!
+      @logger.debug mk_log("countdown!")
       @mutex.synchronize do
-        log "countdown!"
         @count -= 1 if @count > 0
         @conditional.broadcast if @count == 0
       end
@@ -36,7 +36,7 @@ module BroomUtil; module Concurrent
     def wait timeout = nil, exception = false
       return true if count <= 0
       timeout = in_seconds timeout
-      log "Waiting for #{timeout} seconds"
+      @logger.debug mk_log("Waiting for #{timeout} seconds")
       begin
         Timeout::timeout timeout do
           @mutex.synchronize do
@@ -54,8 +54,8 @@ module BroomUtil; module Concurrent
     end
 
     protected
-    def log msg
-      @logger.debug "Concurrent::CountDownLatch(#{@name}): #{msg}"
+    def mk_log msg
+      "Latch(name=#{@name}): #{msg}"
     end
 
     def in_seconds duration
