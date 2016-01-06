@@ -157,6 +157,24 @@ module BroomUtil; module Logging
         :level => :debug
       )
       ::Logging.appenders.stdout(
+        'broom.stdout.trace.off.bright',
+        :layout => ::Logging.layouts.pattern(
+          :color_scheme => 'broom.bright',
+          :pattern      => PATTERNS['broom.stdout.trace.off'],
+          :date_pattern => PATTERNS['broom.date'],
+        ),
+        :level => :debug
+      )
+      ::Logging.appenders.stderr(
+        'broom.stderr.trace.off.bright',
+        :layout => ::Logging.layouts.pattern(
+          :color_scheme => 'broom.bright',
+          :pattern      => PATTERNS['broom.stdout.trace.off'],
+          :date_pattern => PATTERNS['broom.date'],
+        ),
+        :level => :debug
+      )
+      ::Logging.appenders.stdout(
         'broom.stdout.trace.on',
         :layout => ::Logging.layouts.pattern(
           :color_scheme => 'broom.bright',

@@ -18,11 +18,11 @@ module BroomUtil; module Config
   class Simple
     include BroomUtil::Mixins
 
-    attr_accessor :config, :options
+    attr_accessor :banner, :config, :options
 
-    def self.create &block
+    def self.create banner = nil, &block
       require_that(block_given?, "Simple.create called without block")
-      i = Simple.new
+      i = Simple.new banner
       i.instance_eval &block
       i
     end
@@ -53,8 +53,12 @@ module BroomUtil; module Config
       @config[key] = default
     end
 
+    def to_s
+      parser(banner).help
+    end
+
     def parse! argv
-      parser().parse! argv
+      parser(banner).parse! argv
       @config
     end
 
@@ -78,7 +82,8 @@ module BroomUtil; module Config
       end
     end
 
-    def initialize
+    def initialize banner = nill
+      @banner = banner
       @config = {}
       @options = {}
       @logger = ::BroomUtil::Logging.get_logger(self.class)
