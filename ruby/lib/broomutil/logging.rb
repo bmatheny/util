@@ -185,7 +185,9 @@ module BroomUtil; module Logging
       )
       r = ::Logging.logger.root
       r.level = :info
-      r.trace = false
+      if r.respond_to?(:trace=) then
+        r.trace = false
+      end
       r.appenders = 'broom.stdout.trace.off'
     end
   end
